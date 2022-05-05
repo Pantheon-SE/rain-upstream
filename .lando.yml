@@ -1,0 +1,9 @@
+name: rain-upstream
+recipe: pantheon
+config:
+  framework: drupal8
+  webroot: ./web
+  xdebug: true
+  index: false
+  edge: false
+  cache: false
