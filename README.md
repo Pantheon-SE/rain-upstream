@@ -123,24 +123,56 @@ $settings['config_sync_directory'] = '../config/sync';`
 ## 5. Demo Content
 * TBD
 
-The [drupal-scaffold](https://github.com/drupal-composer/drupal-scaffold) plugin can download the scaffold files (like
-index.php, update.php, …) to the web/ directory of your project. If you have not customized those files you could choose
-to not check them into your version control system (e.g. git). If that is the case for your project it might be
-convenient to automatically run the drupal-scaffold plugin after every install or update of your project. You can
-achieve that by registering `@composer drupal:scaffold` as post-install and post-update command in your composer.json:
+## Tests
 
-```json
-"scripts": {
-    "post-install-cmd": [
-        "@composer drupal:scaffold",
-        "..."
-    ],
-    "post-update-cmd": [
-        "@composer drupal:scaffold",
-        "..."
-    ]
-},
-```
+### Run coding standards tests.
+
+*NOTE* Tests will not run until modules are in the "web/modules/custom" directory.
+
+- phpcs - `./tests/code-sniffer.sh ./web`
+- phpcbf - `./tests/code-fixer.sh ./web`
+
+### Drupal-check custom development for 10 readiness.
+
+*NOTE* Checks will not run until modules are in the "web/modules/custom" directory.
+
+- `./vendor/mediacurrent/ci-tests/tests/drupal-check.sh web`
+
+### Run BDD tests.
+
+- `ddev . tests/behat/behat-run.sh https://example.ddev.site`
+
+### Run phpunit tests.
+
+- unit tests - `composer robo test:phpunit-tests`
+- kernel and functional tests - `ddev composer robo test:phpunit-tests -- --filter="/Kernel|Functional/"`
+
+### Run VRT.
+
+* Documentation in tests/visual-regression/README.md
+* Start at "Quick Start with Docker"
+
+### Run a11y tests.
+
+*NOTE* Requires [pa11y](https://github.com/pa11y/pa11y#command-line-interface)
+
+- `./tests/pa11y/pa11y-review.sh https://example.ddev.site`
+
+### OWASP Zap Baseline Scan.
+
+- `docker run --net=ddev_default -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-baseline.py -d -c owasp-zap.conf -p owasp-zap-progress.json -t https://ddev-<projectname>-web`
+
+### GrumPHP
+
+* [GrumPHP](https://github.com/phpro/grumphp) will run some tests on code to be committed. The file grumphp.yml is used to configure.
+    * Coding Standards
+    * Deny committing a list of debug keywords
+    * json and yaml linting
+    * Composer lock file validation
+    * Enlightn Security Checker
+
+- - -
+
 ### How can I apply patches to downloaded modules?
 
 If you need to apply patches (depending on the project being modified, a pull
@@ -149,7 +181,8 @@ request is often a better solution), you can do so with the
 
 To add a patch to drupal module foobar insert the patches section in the extra
 section of composer.json:
-```json
+
+```
 "extra": {
     "patches": {
         "drupal/foobar": {
@@ -158,19 +191,19 @@ section of composer.json:
     }
 }
 ```
-### How do I switch from packagist.drupal-composer.org to packages.drupal.org?
-
-Follow the instructions in the [documentation on drupal.org](https://www.drupal.org/docs/develop/using-composer/using-packagesdrupalorg).
 
 ### How do I specify a PHP version ?
 
-Currently Drupal 8 supports PHP 5.5.9 as minimum version (see [Drupal 8 PHP requirements](https://www.drupal.org/docs/8/system-requirements/drupal-8-php-requirements)), however it's possible that a `composer update` will upgrade some package that will then require PHP 7+.
+This project supports PHP 7.3 as minimum version (see Environment requirements of Drupal 9), however it's possible that a composer update will upgrade some package that will then require PHP 7.3+.
 
-To prevent this you can add this code to specify the PHP version you want to use in the `config` section of `composer.json`:
-```json
+To prevent this you can add this code to specify the PHP version you want to use in the config section of composer.json:
+
+```
 "config": {
     "sort-packages": true,
-    "platform": {"php": "5.5.9"}
+    "platform": {
+        "php": "7.3.19"
+    }
 },
 ```
 ## Additional Links

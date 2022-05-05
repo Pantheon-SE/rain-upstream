@@ -27,11 +27,12 @@
         "drupal/guardr_core": "^2.0",
         "drush/drush": "^11.0",
         "mediacurrent/mis_profile": "^2.0",
-        "mediacurrent/rain": "^3.20",
+        "mediacurrent/rain": "^4.0",
         "mediacurrent/rain_admin": "^2.0@beta",
-        "mediacurrent/rain_demo": "^2.0@beta",
-        "mediacurrent/rain_features": "^3.0@beta",
-        "mediacurrent/rain_theme": "^4.0@beta",
+        "mediacurrent/rain_core": "^4.0",
+        "mediacurrent/rain_demo": "^3.0@beta",
+        "mediacurrent/rain_features": "^4.0@beta",
+        "mediacurrent/rain_theme": "^5.0@beta",
         "oomphinc/composer-installers-extender": "^2.0",
         "webflo/drupal-finder": "^1.0.0",
         "pantheon-systems/drupal-integrations": "^9"
@@ -136,11 +137,6 @@
         "enable-patching": true,
         "patchLevel": {
             "drupal/core": "-p2"
-        },
-        "patches": {
-            "drupal/core": {
-                "1356276 - Allow profiles to provide a base/parent profile and load them in the correct order": "https://www.drupal.org/files/issues/2021-11-18/1356276-675.patch"
-            }
         }
     }
 }
